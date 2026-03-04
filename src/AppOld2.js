@@ -1,27 +1,11 @@
 import './App.css';
-import {useEffect, useState} from 'react';
+import {useState} from 'react';
 import {Note} from './Note';
-import axios from 'axios';
-import { getAllNotes } from './Services/Notes/getAllNotes';
-import { createNote } from './Services/Notes/createNote';
 
 const App = (props) => {
-  const [notes, setNotes] = useState([])
+  const [notes, setNotes] = useState(props.notes)
   const [newNote, setNewNote] = useState('')
-
-  /* useEffect(() => {
-    fetch('https://jsonplaceholder.typicode.com/posts')
-    .then(response => response.json())
-    .then(json => {
-      setNotes(json)
-    })
-  }, []) */
-
-  useEffect(() => {
-    getAllNotes().then(notes => {
-      setNotes(notes)
-    })
-  }, [])
+  const [showAll, setShowAll] = useState(true)
   
   const handleNoteChange = (event) => {
     setNewNote(event.target.value)
@@ -29,29 +13,33 @@ const App = (props) => {
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    
     const noteToAddToState = {
-      //id: notes.length + 1,
-      userId: 1,
-      title: newNote,
-      body: newNote
+      id: notes.length + 1,
+      content: newNote,
+      date: new Date().toISOString(),
+      important: Math.random() < 0.5
     }
-
-    createNote(noteToAddToState).then(note => {
-      setNotes([...notes, note])
-    })
-
-    //setNotes([...notes, noteToAddToState])
+    console.log(noteToAddToState)
+    // setNotes(notes.concat(noteToAddToState))
+    // setNewNote('')
+    setNotes([...notes, noteToAddToState])
     setNewNote('')
   }
 
- 
+  const handleShowAll = () => {
+    setShowAll(() => !showAll)
+  }
 
   return (
     <div>
       <h1>Notas</h1>
+      <button onClick={handleShowAll}> {showAll ? 'Mostrar importantes' : 'Mostrar todas'} </button>
       {/* {notes.map(note => <Note key={note.id} id={note.id} content={note.content} date={note.date} />)} */}
       {notes
+        .filter((note => {
+          if (showAll === true) return true
+            return note.important === true
+          }))
         .map((note => (
           <Note key={note.id} {...note} />
         )

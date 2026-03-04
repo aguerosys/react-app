@@ -6,10 +6,25 @@ import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
+const notes = [
+  {
+    id: 1,
+    content: 'HTML es fácil',
+    date: '2024-06-10T17:30:31.098Z',
+    important: true
+  },
+  {
+    id: 2,
+    content: 'Browser can execute only JavaScript',
+    date: '2024-06-10T18:39:34.091Z',
+    important: false
+  }
+]
+
 
 root.render(
   <React.StrictMode>
-    <App />
+    <App notes={notes} />
   </React.StrictMode>
 )
 

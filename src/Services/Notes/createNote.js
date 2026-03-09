@@ -1,11 +1,10 @@
 import axios from "axios";
 
-export const createNote = ({title, body, userId}) => {
+export const createNote = ({content, date}) => {
     return axios
-    .post('https://jsonplaceholder.typicode.com/posts', {
-      title,
-      body,
-      userId
+    .post('http://localhost:3001/api/notes', {
+      content,
+      date
     })
     .then(response => {
       return response.data
